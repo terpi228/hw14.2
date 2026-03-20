@@ -7,7 +7,7 @@ product1 = Product.new_product(product1_data)
 product2_data = {'name': 'Мышь', 'price': 1500, 'quantity': 20}
 product2 = Product.new_product(product2_data)
 
-category = Category("Электроника")
+category = Category("Электроникa")
 
 
 category.add_product(product1)
