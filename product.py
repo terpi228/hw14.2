@@ -12,14 +12,16 @@ class Product:
             quantity=product_data['quantity']
         )
 
+
     def __str__(self):
         """Строковое представление товара."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        """Сложение товаров: суммарная стоимость (цена * количество)."""
         if not isinstance(other, Product):
             raise TypeError("Можно складывать только объекты Product")
+        if type(self) != type(other):
+            raise TypeError("Нельзя складывать товары разных типов")
         return self.price * self.quantity + other.price * other.quantity
 
     @property
@@ -38,3 +40,18 @@ class Product:
                 return
         self.__price = new_price
         print(f"Цена товара '{self.name}' обновлена до {new_price} руб.")
+
+class Smartphone(Product):
+    def __init__(self, name: str, price: float, quantity: int, efficiency: str, model: str, memory: int, color: str):
+        super().__init__(name, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+class LawnGrass(Product):
+    def __init__(self, name, price, quantity, country, germination_period, color):
+        super().__init__(name, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
