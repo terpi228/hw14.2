@@ -39,32 +39,38 @@ pytest test_product.py test_category.py -v
 ## ⚙️ Установка и запуск
 
 1. Клонируйте репозиторий:
-   ```bash
+   ````bash
    git clone https://github.com/terpi228/hw14.2.git
    cd hw14.2
+   ````
 Установите зависимости через Poetry:
 
-    ```bash
-    poetry install
+```bash
+poetry install
+```
 Активируйте окружение:
 
-    ```bash
-    poetry shell
+```bash
+poetry shell
+```
 Запустите основной скрипт (пример использования):
 
-    ```bash
-    python main.py
+```python 
+main.py
+```
 🧪 Тестирование
 Запуск всех тестов:
 
-    ```bash
-    pytest
+```bash
+pytest
+```
 Или через Poetry:
 
-    ```bash
-    poetry run pytest
+```bash
+poetry run pytest
+```
 📁 Структура
-  ```text
+```text
 hw14.2/<br>
 ├── product.py          # Класс Product<br>
 ├── category.py         # Класс Category<br>
@@ -74,5 +80,6 @@ hw14.2/<br>
 ├── pyproject.toml      # Зависимости (Poetry)<br>
 ├── poetry.lock<br>
 └── README.md<br>
+```
 👨‍💻 Автор
 terpi228

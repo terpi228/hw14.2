@@ -1,4 +1,4 @@
-from product import Product
+from src.product import Product
 
 class Category:
     def __init__(self, name: str):
@@ -22,3 +22,4 @@ def add_product(self, product):
     if not isinstance(product, Product):
         raise TypeError("В категорию можно добавлять только объекты Product и его наследников")
     self.__products.append(product)
+
