@@ -1,5 +1,5 @@
-from product import Product
-from category import Category
+from src.product import Product
+from src.category import Category
 
 product1_data = {'name': 'Ноутбук', 'price': 80000, 'quantity': 5}
 product1 = Product.new_product(product1_data)
