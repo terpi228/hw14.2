@@ -22,12 +22,9 @@ class BaseProduct(ABC):
 
 class LogMixin:
     def __init__(self, *args, **kwargs):
-        # Сохраняем аргументы для вывода
         self._log_args = args
         self._log_kwargs = kwargs
-        # Вызываем следующий __init__ без аргументов (чтобы не сломать object.__init__)
         super().__init__()
-        # Формируем строку с параметрами и выводим
         params = ", ".join(repr(arg) for arg in args)
         if kwargs:
             params += ", " + ", ".join(f"{k}={v!r}" for k, v in kwargs.items())
@@ -35,17 +32,18 @@ class LogMixin:
 
 
 class Product(LogMixin, BaseProduct):
-    def __init__(self, name: str, price: float, quantity: int):
+    def __init__(self, name: str, description: str, price: float, quantity: int):
         self.name = name
+        self.description = description
         self.__price = price
         self.quantity = quantity
-        # Передаём аргументы миксину (он выведет их и вызовет следующий __init__ без аргументов)
-        super().__init__(name, price, quantity)
+        super().__init__(name, description, price, quantity)  # передаем в миксин
 
     @classmethod
     def new_product(cls, product_data: dict):
         return cls(
             name=product_data['name'],
+            description=product_data.get('description', ''),
             price=product_data['price'],
             quantity=product_data['quantity']
         )
@@ -79,8 +77,8 @@ class Product(LogMixin, BaseProduct):
 
 
 class Smartphone(Product):
-    def __init__(self, name: str, price: float, quantity: int, efficiency: str, model: str, memory: int, color: str):
-        super().__init__(name, price, quantity)
+    def __init__(self, name: str, description: str, price: float, quantity: int, efficiency: str, model: str, memory: int, color: str):
+        super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
@@ -88,8 +86,8 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
-    def __init__(self, name, price, quantity, country, germination_period, color):
-        super().__init__(name, price, quantity)
+    def __init__(self, name: str, description: str, price: float, quantity: int, country: str, germination_period: str, color: str):
+        super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
         self.color = color
