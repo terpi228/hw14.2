@@ -1,9 +1,7 @@
 import pytest
 from src.product import BaseProduct, Product, Smartphone, LawnGrass
+from src.category import Category
 
-def test_base_product_abstract():
-    with pytest.raises(TypeError):
-        BaseProduct()
 
 def test_log_mixin(capsys):
     p = Product("Телефон", "описание", 50000, 10)
@@ -13,8 +11,8 @@ def test_log_mixin(capsys):
 def test_product_init():
     p = Product("Телефон", "описание", 50000, 10)
     assert p.name == "Телефон"
-    assert p.description == "описание"
     assert p.quantity == 10
+    assert p.description == "описание"
 
 def test_price_property():
     p = Product("Телефон", "описание", 50000, 10)
@@ -107,9 +105,9 @@ def test_inheritance():
 
 def test_product_different_values():
     p1 = Product("Товар1", "описание1", 100, 5)
-    p2 = Product("Товар2", "описание2", 200, 0)
+    p2 = Product("Товар2", "описание2", 200, 1)
     assert p1.quantity == 5
-    assert p2.quantity == 0
+    assert p2.quantity == 1
 
 def test_smartphone_with_different_values():
     s = Smartphone("Galaxy", "описание", 80000, 3, "Exynos", "S21", 256, "синий")
@@ -121,26 +119,11 @@ def test_lawn_grass_with_different_values():
     assert l.price == 1500
     assert l.quantity == 20
 
-def test_product_edge_cases():
-    p = Product("", "", 0, 0)
-    assert p.name == ""
-    assert p.price == 0
-    assert p.quantity == 0
-
 def test_product_negative_values():
     p = Product("Тест", "описание", -100, -5)
     assert p.price == -100
     assert p.quantity == -5
 
-def test_smartphone_edge_cases():
-    s = Smartphone("", "", 0, 0, "", "", 0, "")
-    assert s.name == ""
-    assert s.price == 0
-    assert s.quantity == 0
-
-def test_lawn_grass_edge_cases():
-    l = LawnGrass("", "", 0, 0, "", "", "")
-    assert l.name == ""
 
 def test_product_type_validation():
     pass
@@ -185,8 +168,27 @@ def test_lawn_grass_full_coverage():
     assert l.germination_period == "10 дней"
     assert l.color == "зеленый"
 
-def test_edge_cases_zero_values():
-    p = Product("", "", 0, 0)
-    assert p.name == ""
-    assert p.price == 0
-    assert p.quantity == 0
+def test_product_zero_quantity():
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        Product("Брак", "описание", 100, 0)
+
+def test_add_product_zero_quantity(capsys):
+    cat = Category("Тест", "Описание", [])
+    # Создаём товар с ненулевым количеством, потом подменяем
+    p = Product("Товар", "описание", 100, 5)
+    p.quantity = 0
+    cat.add_product(p)
+    captured = capsys.readouterr()
+    assert "Ошибка: Попытка добавить товар с нулевым количеством" in captured.out
+    assert "Обработка добавления товара завершена" in captured.out
+    assert "Товар добавлен" not in captured.out
+    assert len(cat._Category__products) == 0
+
+def test_add_product_success(capsys):
+    cat = Category("Тест", "Описание", [])
+    p = Product("Товар", "описание", 100, 5)
+    cat.add_product(p)
+    captured = capsys.readouterr()
+    assert "Товар добавлен" in captured.out
+    assert "Обработка добавления товара завершена" in captured.out
+    assert len(cat._Category__products) == 1

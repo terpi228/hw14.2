@@ -33,11 +33,13 @@ class LogMixin:
 
 class Product(LogMixin, BaseProduct):
     def __init__(self, name: str, description: str, price: float, quantity: int):
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
-        super().__init__(name, description, price, quantity)  # передаем в миксин
+        super().__init__(name, description, price, quantity)  # для миксина
 
     @classmethod
     def new_product(cls, product_data: dict):
