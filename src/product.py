@@ -1,48 +1,45 @@
 from abc import ABC, abstractmethod
 
-# Абстрактный базовый класс
 class BaseProduct(ABC):
     @abstractmethod
     def __str__(self):
-        """Строковое представление товара."""
         pass
 
     @abstractmethod
     def __add__(self, other):
-        """Сложение товаров (стоимость)."""
         pass
 
     @property
     @abstractmethod
     def price(self):
-        """Геттер цены."""
         pass
 
     @price.setter
     @abstractmethod
     def price(self, value):
-        """Сеттер цены."""
         pass
 
 
-# Миксин для логирования
 class LogMixin:
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)   # вызываем следующий __init__ по цепочке
-        # Формируем строку с параметрами
+        # Сохраняем аргументы для вывода
+        self._log_args = args
+        self._log_kwargs = kwargs
+        # Вызываем следующий __init__ без аргументов (чтобы не сломать object.__init__)
+        super().__init__()
+        # Формируем строку с параметрами и выводим
         params = ", ".join(repr(arg) for arg in args)
         if kwargs:
             params += ", " + ", ".join(f"{k}={v!r}" for k, v in kwargs.items())
         print(f"Создан объект класса {self.__class__.__name__}({params})")
 
 
-# Теперь Product наследует от миксина и абстрактного класса
 class Product(LogMixin, BaseProduct):
     def __init__(self, name: str, price: float, quantity: int):
         self.name = name
         self.__price = price
         self.quantity = quantity
-        # Вызываем super().__init__ для передачи управления миксину
+        # Передаём аргументы миксину (он выведет их и вызовет следующий __init__ без аргументов)
         super().__init__(name, price, quantity)
 
     @classmethod
@@ -54,7 +51,6 @@ class Product(LogMixin, BaseProduct):
         )
 
     def __str__(self):
-        """Строковое представление товара."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):

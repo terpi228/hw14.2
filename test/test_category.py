@@ -12,6 +12,7 @@ def test_add_product():
     p = Product("Телефон", 50000, 10)
     cat.add_product(p)
     assert len(cat._Category__products) == 1
+    assert cat._Category__products[0] == p
 
 def test_add_product_wrong_type():
     cat = Category("Тест")
@@ -23,6 +24,7 @@ def test_add_product_inherited():
     s = Smartphone("iPhone", 120000, 1, "A16", "15", 128, "черный")
     cat.add_product(s)
     assert len(cat._Category__products) == 1
+    assert isinstance(cat._Category__products[0], Smartphone)
 
 def test_get_products_info():
     cat = Category("Тест")
@@ -43,3 +45,29 @@ def test_str():
 def test_str_empty():
     cat = Category("Тест")
     assert str(cat) == "Тест, количество продуктов: 0 шт."
+
+def test_str_with_inherited():
+    cat = Category("Смешанная")
+    cat.add_product(Product("Обычный", 100, 5))
+    cat.add_product(Smartphone("Смартфон", 50000, 2, "A16", "15", 128, "черный"))
+    cat.add_product(LawnGrass("Трава", 1000, 3, "РФ", "10 дней", "зеленый"))
+    assert str(cat) == "Смешанная, количество продуктов: 10 шт."
+
+def test_multiple_adds():
+    cat = Category("Тест")
+    for i in range(3):
+        cat.add_product(Product(f"Товар{i}", 100, 1))
+    assert len(cat._Category__products) == 3
+
+def test_dunder_methods():
+    cat = Category("Тест")
+    pass
+
+def test_add_product_multiple_wrong_types():
+    cat = Category("Тест")
+    with pytest.raises(TypeError):
+        cat.add_product([])
+    with pytest.raises(TypeError):
+        cat.add_product({})
+    with pytest.raises(TypeError):
+        cat.add_product(None)
