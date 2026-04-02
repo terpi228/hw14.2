@@ -12,3 +12,8 @@ class Category:
     def get_products_info(self):
         """Возвращает список строк с информацией о товарах."""
         return [f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт." for p in self.__products]
+
+    def __str__(self):
+        total_quantity = sum(p.quantity for p in self.__products)
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
+
