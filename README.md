@@ -1,3 +1,29 @@
+
+# Интернет-магазин
+
+Проект для обучения ООП на Python.
+
+## Классы
+
+- `Product` – базовый класс товара с атрибутами `name`, `price`, `quantity`.  
+  Поддерживает строковое отображение (`__str__`), сложение (`__add__`) как суммарную стоимость товаров.
+- `Category` – категория товаров. Содержит приватный список товаров, метод добавления и строковое отображение.
+- `Smartphone` – наследник `Product`. Дополнительные атрибуты: `efficiency`, `model`, `memory`, `color`.
+- `LawnGrass` – наследник `Product`. Дополнительные атрибуты: `country`, `germination_period`, `color`.
+
+## Новый функционал (ДЗ 16.1)
+
+- Реализованы классы-наследники `Smartphone` и `LawnGrass`.
+- Сложение товаров (`__add__`) теперь разрешено только для объектов одного класса. При попытке сложить товары разных типов выбрасывается `TypeError`.
+- Метод `Category.add_product()` проверяет тип добавляемого объекта: можно добавлять только экземпляры `Product` и его наследников. Иначе – `TypeError`.
+
+## Тестирование
+
+Для запуска тестов:
+
+```bash
+pytest test_product.py test_category.py -v
+=======
 # Домашнее задание
 
 Учебный проект интернет-магазина на Python. Реализованы классы `Product` и `Category` с инкапсуляцией, геттерами/сеттерами, класс-методом и тестами.
@@ -13,32 +39,38 @@
 ## ⚙️ Установка и запуск
 
 1. Клонируйте репозиторий:
-   ```bash
+   ````bash
    git clone https://github.com/terpi228/hw14.2.git
    cd hw14.2
+   ````
 Установите зависимости через Poetry:
 
-    ```bash
-    poetry install
+```bash
+poetry install
+```
 Активируйте окружение:
 
-    ```bash
-    poetry shell
+```bash
+poetry shell
+```
 Запустите основной скрипт (пример использования):
 
-    ```bash
-    python main.py
+```python 
+main.py
+```
 🧪 Тестирование
 Запуск всех тестов:
 
-    ```bash
-    pytest
+```bash
+pytest
+```
 Или через Poetry:
 
-    ```bash
-    poetry run pytest
+```bash
+poetry run pytest
+```
 📁 Структура
-  ```text
+```text
 hw14.2/<br>
 ├── product.py          # Класс Product<br>
 ├── category.py         # Класс Category<br>
@@ -48,5 +80,6 @@ hw14.2/<br>
 ├── pyproject.toml      # Зависимости (Poetry)<br>
 ├── poetry.lock<br>
 └── README.md<br>
+```
 👨‍💻 Автор
 terpi228
