@@ -1,7 +1,9 @@
 from src.product import Product
 
+
 class ZeroQuantityError(Exception):
     pass
+
 
 class Category:
     def __init__(self, name: str, description: str, products: list = None):
@@ -11,7 +13,9 @@ class Category:
 
     def add_product(self, product):
         if not isinstance(product, Product):
-            raise TypeError("В категорию можно добавлять только объекты Product и его наследников")
+            raise TypeError(
+                "В категорию можно добавлять только объекты Product и его наследников"
+            )
         try:
             if product.quantity == 0:
                 raise ZeroQuantityError("Попытка добавить товар с нулевым количеством")
@@ -24,7 +28,10 @@ class Category:
             print("Обработка добавления товара завершена")
 
     def get_products_info(self):
-        return [f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт." for p in self.__products]
+        return [
+            f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт."
+            for p in self.__products
+        ]
 
     def __str__(self):
         total_quantity = sum(p.quantity for p in self.__products)

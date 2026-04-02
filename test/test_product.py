@@ -1,6 +1,6 @@
 import pytest
-from src.product import Product, Smartphone, LawnGrass, BaseProduct
-from src.category import Category  # нужно для некоторых тестов, но не обязательно
+
+from src.product import BaseProduct, LawnGrass, Product, Smartphone
 
 
 def test_product_creation():
@@ -14,18 +14,15 @@ def test_product_creation():
 
 def test_product_zero_quantity():
     """Попытка создать продукт с quantity = 0 вызывает ValueError."""
-    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+    with pytest.raises(
+        ValueError, match="Товар с нулевым количеством не может быть добавлен"
+    ):
         Product("Брак", "Описание", 100, 0)
 
 
 def test_new_product_classmethod():
     """Классовый метод new_product создаёт продукт из словаря."""
-    data = {
-        'name': 'Ноутбук',
-        'description': 'Игровой',
-        'price': 70000,
-        'quantity': 5
-    }
+    data = {"name": "Ноутбук", "description": "Игровой", "price": 70000, "quantity": 5}
     p = Product.new_product(data)
     assert p.name == "Ноутбук"
     assert p.description == "Игровой"
@@ -92,7 +89,7 @@ def test_price_setter_zero_or_negative(capsys):
 def test_price_setter_decrease_confirmed(monkeypatch, capsys):
     """Понижение цены с подтверждением."""
     p = Product("Товар", "Описание", 1000, 2)
-    monkeypatch.setattr('builtins.input', lambda _: 'y')
+    monkeypatch.setattr("builtins.input", lambda _: "y")
     p.price = 800
     captured = capsys.readouterr()
     assert "Цена товара 'Товар' обновлена до 800 руб." in captured.out
@@ -102,7 +99,7 @@ def test_price_setter_decrease_confirmed(monkeypatch, capsys):
 def test_price_setter_decrease_cancelled(monkeypatch, capsys):
     """Понижение цены с отказом."""
     p = Product("Товар", "Описание", 1000, 2)
-    monkeypatch.setattr('builtins.input', lambda _: 'n')
+    monkeypatch.setattr("builtins.input", lambda _: "n")
     p.price = 800
     captured = capsys.readouterr()
     assert "Изменение цены отменено" in captured.out
@@ -124,14 +121,14 @@ def test_smartphone_creation():
 
 def test_lawn_grass_creation():
     """Создание газонной травы со всеми атрибутами."""
-    l = LawnGrass("Трава", "Семена", 1000, 10, "РФ", "10 дней", "зеленый")
-    assert l.name == "Трава"
-    assert l.description == "Семена"
-    assert l.price == 1000
-    assert l.quantity == 10
-    assert l.country == "РФ"
-    assert l.germination_period == "10 дней"
-    assert l.color == "зеленый"
+    lawn_grass = LawnGrass("Трава", "Семена", 1000, 10, "РФ", "10 дней", "зеленый")
+    assert lawn_grass.name == "Трава"
+    assert lawn_grass.description == "Семена"
+    assert lawn_grass.price == 1000
+    assert lawn_grass.quantity == 10
+    assert lawn_grass.country == "РФ"
+    assert lawn_grass.germination_period == "10 дней"
+    assert lawn_grass.color == "зеленый"
 
 
 def test_smartphone_str():
@@ -142,23 +139,21 @@ def test_smartphone_str():
 
 def test_lawn_grass_str():
     """Строковое представление травы."""
-    l = LawnGrass("Трава", "Описание", 1000, 10, "РФ", "10 дней", "зеленый")
-    assert str(l) == "Трава, 1000 руб. Остаток: 10 шт."
+    item = LawnGrass("Трава", "Описание", 1000, 10, "РФ", "10 дней", "зеленый")
+    assert str(item) == "Трава, 1000 руб. Остаток: 10 шт."
 
 
 def test_inheritance():
     """Проверка, что дочерние классы являются экземплярами Product."""
     s = Smartphone("iPhone", "Описание", 120000, 1, "A16", "15", 128, "черный")
-    l = LawnGrass("Трава", "Описание", 1000, 10, "РФ", "10 дней", "зеленый")
+    i = LawnGrass("Трава", "Описание", 1000, 10, "РФ", "10 дней", "зеленый")
     assert isinstance(s, Product)
-    assert isinstance(l, Product)
+    assert isinstance(i, Product)
 
 
 def test_log_mixin_output(capsys):
     """Проверка, что LogMixin выводит сообщение при создании."""
-    p = Product("Телефон", "Описание", 50000, 10)
     captured = capsys.readouterr()
-    # В миксине печатается: Создан объект класса Product('Телефон', 'Описание', 50000, 10)
     assert "Создан объект класса Product" in captured.out
     assert "Телефон" in captured.out
     assert "Описание" in captured.out
@@ -169,4 +164,4 @@ def test_log_mixin_output(capsys):
 def test_base_product_abstract():
     """Проверяем, что BaseProduct абстрактный (создать нельзя)."""
     with pytest.raises(TypeError):
-        BaseProduct()  # не может быть инстанциирован
+        BaseProduct()

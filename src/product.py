@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class BaseProduct(ABC):
     @abstractmethod
     def __str__(self):
@@ -44,10 +45,10 @@ class Product(LogMixin, BaseProduct):
     @classmethod
     def new_product(cls, product_data: dict):
         return cls(
-            name=product_data['name'],
-            description=product_data.get('description', ''),
-            price=product_data['price'],
-            quantity=product_data['quantity']
+            name=product_data["name"],
+            description=product_data.get("description", ""),
+            price=product_data["price"],
+            quantity=product_data["quantity"],
         )
 
     def __str__(self):
@@ -56,7 +57,7 @@ class Product(LogMixin, BaseProduct):
     def __add__(self, other):
         if not isinstance(other, Product):
             raise TypeError("Можно складывать только объекты Product")
-        if type(self) != type(other):
+        if type(self) is not type(other):
             raise TypeError("Нельзя складывать товары разных типов")
         return self.price * self.quantity + other.price * other.quantity
 
@@ -70,8 +71,14 @@ class Product(LogMixin, BaseProduct):
             print("Цена не должна быть нулевая или отрицательная")
             return
         if new_price < self.__price:
-            answer = input(f"Вы действительно хотите понизить цену с {self.__price} до {new_price}? (y/n): ").strip().lower()
-            if answer != 'y':
+            answer = (
+                input(
+                    f"Вы действительно хотите понизить цену с {self.__price} до {new_price}? (y/n): "
+                )
+                .strip()
+                .lower()
+            )
+            if answer != "y":
                 print("Изменение цены отменено")
                 return
         self.__price = new_price
@@ -79,7 +86,17 @@ class Product(LogMixin, BaseProduct):
 
 
 class Smartphone(Product):
-    def __init__(self, name: str, description: str, price: float, quantity: int, efficiency: str, model: str, memory: int, color: str):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: str,
+        model: str,
+        memory: int,
+        color: str,
+    ):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
@@ -88,7 +105,16 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
-    def __init__(self, name: str, description: str, price: float, quantity: int, country: str, germination_period: str, color: str):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ):
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period

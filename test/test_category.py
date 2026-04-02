@@ -1,6 +1,7 @@
 import pytest
-from src.product import Product, Smartphone, LawnGrass
-from src.category import Category, ZeroQuantityError
+
+from src.category import Category
+from src.product import Product, Smartphone
 
 
 def test_category_init_without_products():
@@ -50,7 +51,10 @@ def test_add_product_zero_quantity(capsys):
 def test_add_product_wrong_type():
     """Попытка добавить не-продукт вызывает TypeError."""
     cat = Category("Тест", "Описание")
-    with pytest.raises(TypeError, match="В категорию можно добавлять только объекты Product и его наследников"):
+    with pytest.raises(
+        TypeError,
+        match="В категорию можно добавлять только объекты Product и его наследников",
+    ):
         cat.add_product("строка")
     with pytest.raises(TypeError):
         cat.add_product(123)
@@ -72,7 +76,7 @@ def test_get_products_info():
     info = cat.get_products_info()
     expected = [
         "Телефон, 50000 руб. Остаток: 10 шт.",
-        "Чехол, 1000 руб. Остаток: 30 шт."
+        "Чехол, 1000 руб. Остаток: 30 шт.",
     ]
     assert info == expected
 
