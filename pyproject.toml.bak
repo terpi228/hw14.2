@@ -13,3 +13,14 @@ python = "^3.14"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+[flake8]
+max-line-length = 100
+extend-ignore = E203, W503
+exclude = .git,__pycache__,venv,.idea
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = "E203, W503"
+exclude = ".git,__pycache__,venv,.idea"
