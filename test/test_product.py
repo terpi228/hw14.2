@@ -153,7 +153,12 @@ def test_inheritance():
 
 def test_log_mixin_output(capsys):
     """Проверка, что LogMixin выводит сообщение при создании."""
+    # Сначала создай объект (он выведет сообщение)
+    product = Product("Телефон", "Описание", 50000, 10)  # или класс с LogMixin
+
+    # Теперь читаем вывод
     captured = capsys.readouterr()
+
     assert "Создан объект класса Product" in captured.out
     assert "Телефон" in captured.out
     assert "Описание" in captured.out
